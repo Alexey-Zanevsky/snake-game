@@ -1,0 +1,63 @@
+.menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    height: 100%;
+}
+.level-section {
+    display: flex;
+    height: 50%;
+    flex-direction: column;
+    justify-content: space-evenly;
+    border-bottom: 2px solid var(--color_2);
+}
+.level-section span {
+    text-align: center;
+    font-size: 30px;
+    padding: 10px;
+}
+.level-section div {
+    text-align: center;
+}
+.level-section div > * {
+    all: unset;
+    cursor: pointer;
+    font-size: 30px;
+    padding: 20px;
+    background-color: var(--color_3);
+    box-shadow: inset -5px -3px 0px 0px var(--color_2);
+    transition: all 0.05s ease-in-out;
+}
+.level-section div > *:active {
+    box-shadow: inset -4px -2px 0px 0px var(--color_2);
+    transform: translateY(2px); 
+}
+.level-section button:nth-child(2) {
+    margin: 0 20px;
+}
+
+.snake-version-section {
+    display: flex;
+    height: 50%;
+    
+}
+.snake-version-section span {
+    display: flex;
+    width: 30%;
+    height: 100%;
+    font-size: 30px;
+    align-items: center;
+    justify-content: center;
+}
+.snake-version-section div {
+    display: flex;
+    width: 70%;
+    align-items: center;
+}
+.snake-version {
+    width: 33.33%;
+    height: 50%;
+    border: 2px solid var(--color_2);
+    margin: 0 10px;
+}

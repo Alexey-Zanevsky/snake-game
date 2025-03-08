@@ -14,6 +14,7 @@
 
 
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="menu__styles.css">
     <script src="script.js" defer></script>
     
     <title>Snake</title>
@@ -26,7 +27,29 @@
     <header class="snake-title">Snake</header>
 
     <div class="flex-container">
-        <div class="snake-field"></div>
+        
+        <div class="snake-field">
+            <main class="menu">
+                <section class="level-section">
+                    <span>CHOOSE LEVEL</span>
+                    <div>
+                        <button>beginner</button>
+                        <button>advanced</button>
+                        <button>expert</button>
+                    </div>
+                </section>
+                <section class="snake-version-section">
+                    <span>Choose<br>your<br>snake</span>
+                    <div>
+                        <div class="snake-version"></div>
+                        <div class="snake-version"></div>
+                        <div class="snake-version"></div>
+                    </div>
+                </section>
+            </main>
+        </div>
+        
+        
         <div class="rating">
             <div class="rating__best-players">Best players</div>
             <div class="rating__columns-names flex-item">
@@ -136,6 +159,7 @@
             </div>
             
         </div>
+        
     </div>
 
     <footer class="footer"></footer>

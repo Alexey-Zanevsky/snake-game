@@ -68,6 +68,7 @@ body {
     border-radius: 5px;
     background-color: var(--color_1);
 }
+
 .rating {
     display: flex;
     flex-direction: column;
