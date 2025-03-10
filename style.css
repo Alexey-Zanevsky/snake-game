@@ -28,6 +28,7 @@ body {
     /* background-image: url('imgs/bodyBackgroundGif.gif');  */
     /* background-size: cover; */
 }
+
 .body-background-video {
     position: fixed;
     top: 0;
@@ -62,11 +63,17 @@ body {
 }
 
 .snake-field {
+    display: flex;
     height: 100%;
     width: 80%;
     border: 2px solid var(--color_2);
     border-radius: 5px;
     background-color: var(--color_1);
+}
+
+.load-style {
+    text-align: center;
+    font-size: 30px;
 }
 
 .rating {
