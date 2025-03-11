@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="menu__styles.css">
 
     <!-- JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
     <script src="script.js" defer></script>
     
     <title>Snake</title>
@@ -27,14 +27,16 @@
         <source src="imgs/bodyBackgroundVideo.mp4" type="video/mp4">
     </video>
     
-    <div class="snake-title">Snake</div>
+    <span class="snake-title">Snake</span>
 
     <div class="flex-container">
         
         <div class="snake-field">
             <main class="menu">
                 <section class="level-section">
+
                     <span>CHOOSE LEVEL</span>
+                    
                     <div>
                         <button class="button-style">beginner</button>
                         <button class="button-style">advanced</button>
@@ -51,7 +53,7 @@
                     <button class="start-button button-style">START</button>
                 </section>
             </main>
-            <!-- <div class="load-style">1</div> -->
+            <span class="load-timer"></span>
         </div>
         
         

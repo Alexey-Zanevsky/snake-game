@@ -1,10 +1,8 @@
 'use strict'
 
-// function sleep(ms) {
-//     return new Promise(resolve => setTimeout(resolve, ms));
-// }
+const loadTimerEl = document.querySelector(".load-timer");
 
-document.querySelector(".start-button").addEventListener("click", async function () {
+document.querySelector(".start-button").addEventListener("click",function () {
     gsap.to(".snake-title", {
         opacity: 0,
         scale: .8,
@@ -14,7 +12,6 @@ document.querySelector(".start-button").addEventListener("click", async function
             document.querySelector(".snake-title").style.display = "none"
         }
     })
-    // await sleep(500); 
     gsap.to(".rating", {
         opacity: 0,
         scale: .8,
@@ -24,7 +21,6 @@ document.querySelector(".start-button").addEventListener("click", async function
             document.querySelector(".rating").style.display = "none";
         }
     })
-    // await sleep(500); 
     gsap.to(".flex-container", {
         width: "100%", 
         height: "100%", 
@@ -45,4 +41,24 @@ document.querySelector(".start-button").addEventListener("click", async function
             document.querySelector(".menu").style.display = "none";
         }
     })
+    loadTimerEl.style.display = "flex";
+    loadTimer(loadTimerEl);
 });
+
+function loadTimer() {
+    let timeLeft = 4;
+    loadTimerEl.style.display = "flex"; 
+    
+    const countDown = setInterval(() => {
+        timeLeft--; 
+        if (timeLeft === 0) 
+            loadTimerEl.innerHTML = "START!";
+         else 
+            loadTimerEl.innerHTML = timeLeft;
+
+        if (timeLeft < 0) { 
+            clearInterval(countDown);
+            loadTimerEl.style.display = "none";
+        }
+    }, 1000);
+}

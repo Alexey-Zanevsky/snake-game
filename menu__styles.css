@@ -14,7 +14,7 @@
 }
 .level-section span {
     text-align: center;
-    font-size: 30px;
+    font-size: calc(1.2* var(--font-size-index));
     padding: 10px;
 }
 .level-section div {
@@ -23,8 +23,8 @@
 .button-style {
     all: unset;
     cursor: pointer;
-    font-size: 30px;
-    padding: 20px;
+    font-size: calc(1* var(--font-size-index));
+    padding: calc(1* var(--font-size-index));
     background-color: var(--color_3);
     box-shadow: inset -5px -3px 0px 0px var(--color_2);
     transition: all 0.05s ease-in-out;
@@ -42,7 +42,7 @@
     align-content: center;
 }
 .start-button {
-    width: fit-content;
+    font-size: calc(1* var(--font-size-index));
 }
 
 
@@ -63,7 +63,7 @@
     padding: 0 10px;
     margin: 0 10px 0 20px;
     /* border: 2px solid var(--color_2); */
-    font-size: 30px;
+    font-size: calc(1* var(--font-size-index));
 }
 .snake-version-section div {
     border: 2px solid var(--color_2);
@@ -71,4 +71,5 @@
 .snake-version-section div:nth-child(4) {
     margin-right: 20px;
 }
+
 

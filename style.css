@@ -2,17 +2,14 @@
     box-sizing: border-box;
     padding: 0;
     margin: 0;
-    /* font-family: "Jersey 15", sans-serif; */
-    /* font-weight: 400; */
     font-family: "Orbitron", sans-serif;
     font-weight: 900;
     font-style: normal;
-    font-size: 17px;
     border: none;
 }
 
 :root {
-    /* --snakeTitle-color: rgb(101, 25, 113); */
+    --font-size-index: calc(1vw + 1vh);
     --snakeTitle-color: #FF3EA5;
     --color_1: #6420AA;
     --color_2: #FF3EA5;
@@ -25,8 +22,6 @@ body {
     width: 100vw;
     display: flex;
     flex-direction: column;
-    /* background-image: url('imgs/bodyBackgroundGif.gif');  */
-    /* background-size: cover; */
 }
 
 .body-background-video {
@@ -44,7 +39,7 @@ body {
     align-items: center;
     justify-content: center;
     
-    font-size: 10vh;
+    font-size: calc(3 * var(--font-size-index));
     height: 15%;
     padding: 1% 0;
     
@@ -68,6 +63,17 @@ body {
     border: 2px solid var(--color_2);
     border-radius: 5px;
     background-color: var(--color_1);
+    text-align: center;
+}
+
+.load-timer {
+    display: none;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(3 * var(--font-size-index));
+    color: var(--color_3);
+    text-shadow: 0px 3px 0px var(--color_2);
 }
 
 .rating {
@@ -85,12 +91,13 @@ body {
 }
 .rating__best-players {
     text-align: center;
+    font-size: calc(.7* var(--font-size-index));
 }
 .flex-item {
     display: flex;
 }
 .flex-item > * {
-    font-size: 13px;
+    font-size: calc(.5 * var(--font-size-index));
     font-weight: 400;
 }
 aside, section {
