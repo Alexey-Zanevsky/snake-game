@@ -1,4 +1,2 @@
 .vscode
-base__game.js
-classic__game.js
-movement.js
+snake__movement.js

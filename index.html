@@ -18,9 +18,12 @@
 
     <!-- JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
-    <script src="script.js" defer></script>
-    <script src="snake__movement.js" defer></script>
-    
+    <!-- <script src="snake__movement.js" defer></script> -->
+    <!-- <script src="base__game.js" defer></script>
+    <script src="classic__game.js" defer></script> -->
+    <script type="module" src="script.js" defer></script>
+    <script type="module" src="base__game.js" defer></script>
+
     <title>Snake</title>
 </head>
 <body>
@@ -58,16 +61,16 @@
                 <span class="time-text">start in</span>
                 <span class="time">READY?</span>
             </div>
-            <canvas class="snake-field" id="gameCanvas" width="900" height="600"></canvas>
+            <canvas class="snake-field" width="900" height="600"></canvas>
             <div class="score-in-square">
                 <span>your score</span>
                 <span class="score">0</span>
             </div>
 
-            <div id="gameOverModal" class="modal">
+            <div class="gameOverModal">
                 <p>Game Over!</p>
-                <p>Time: <span id="finalTime"></span></p>
-                <p>Score: <span id="finalScore"></span></p>
+                <p>Time: <span class="finalTime"></span></p>
+                <p>Score: <span class="finalScore"></span></p>
                 <button class="button-style">Play Again</button>
                 <button class="button-style">Main Menu</button>
             </div>
@@ -185,6 +188,5 @@
         </div>
         
     </div>
-
 </body>
 </html>
