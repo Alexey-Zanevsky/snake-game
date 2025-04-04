@@ -1,114 +1,98 @@
 'use strict'
+const color_1 = "#6420AA";
+const color_2 = "#FF3EA5";
+const color_3 = "#FF7ED4";
+const color_4 = "#FFB5DA";
+const color_5 = "#8FD14F";
+const color_6 = "#F5F5F5";
 
-const loadTimerEl = document.querySelector(".load-timer");
 
-let canvas;
-let t1 = gsap.timeline();
+let gameSpeed = 100;
 
-document.querySelector(".start-button").addEventListener("click",function () {
-    gsap.to(".menu", {
-        opacity: 0,
-        scale: .8,
-        duration: .3,
-        ease: "power1.out",
-        onComplete: function() {
-            document.querySelector(".menu").style.display = "none";
-        }
-    })
-    gsap.to(".snake-title", {
-        delay: .2,
-        opacity: 0,
-        scale: .8,
-        duration: .3,
-        ease: "power1.out"
-    })
-    gsap.to(".rating", {
-        delay: .4,
-        opacity: 0,
-        scale: .8,
-        duration: .3,
-        ease: "power1.out",
-        onComplete: function() {
-            document.querySelector(".rating").style.display = "none";
-            loadTimer(loadTimerEl, canvas);
-            gsap.to(".snake-field", {
-                flexGrow: 5,
-                duration: .8,
-                ease: "power1.in",
-                onComplete: function() {
-                    document.querySelector(".snake-title").style.display = "none";
-                    gsap.to(".flex-container", {
-                        height: "90%",
-                        duration: .8,
-                        ease: "back.inOut(3)",
-                    })
-                }       
-            });
-            
-
-        }   
-    })
-    
+document.querySelectorAll('.level-section .button-style').forEach(button => {
+    button.addEventListener('click', () => {
+        document.querySelectorAll('.level-section .button-style').forEach(btn => btn.classList.remove('active'));      
+        button.classList.add('active');
+        const level = button.textContent.toLowerCase();
+        if (level === 'beginner') gameSpeed = 100;
+        if (level === 'advanced') gameSpeed = 75;
+        if (level === 'expert') gameSpeed = 50;
+    });
 });
 
-function loadTimer(loadTimerEl, canvas) {
-    let timeLeft = 6;
-    loadTimerEl.style.display = "flex"; 
-    
-    const countDown = setInterval(() => {
-        timeLeft--; 
-        console.log(timeLeft);
-        if (timeLeft == 2) 
-            loadTimerEl.innerHTML = "START!";
-        if(timeLeft == 5 || timeLeft == 4 || timeLeft == 3)
-            loadTimerEl.innerHTML = timeLeft - 2;
-        if (timeLeft == 1) { 
-            loadTimerEl.style.display = "none";
-            clearInterval(countDown);
-            createCanvasElement(canvas);
-        }
-        // if(timeLeft == 0) {
-        // }
-    }, 1000); 
+
+document.querySelector(".start-button").addEventListener("click", function () {
+    gsap.timeline()
+        .to(".snake-title", { 
+            opacity: 0, 
+            scale: 0.8, 
+            duration: .2, 
+            ease: "power1.out", 
+            onComplete: function() {
+                document.querySelector(".snake-title").style.display = "none";
+            }})
+        .to(".rating", {  
+            opacity: 0, 
+            scale: 0.8, 
+            duration: 0.2, 
+            ease: "power1.out",
+            onComplete: function() {
+                document.querySelector(".rating").style.display = "none";
+            }}) 
+        .to(".menu", {  
+            opacity: 0, 
+            scale: 0.8, 
+            duration: 0.1, 
+            ease: "power1.out", 
+            onComplete: function() {
+                gsap.to(".menu-container", { 
+                    opacity: 0, 
+                    scale: 0.6, 
+                    duration: 0.2, 
+                    ease: "power1.out", 
+                    onComplete: function() {
+                        document.querySelector(".menu-container").style.display = "none";
+                        document.querySelector(".flex-container").style.height = "100%";
+                        document.querySelector(".flex-container").style.width = "100%";
+                        gsap.set(".snake-field__container", { display: "flex" });
+                    }});
+        }})
+        .to(".snake-field__container", { 
+            opacity: 1, 
+            scale: 1, 
+            duration: 0.2, 
+            ease: "power2.out" })
+        .add(() => {
+            document.querySelector(".snake-field").style.display = "flex";
+            document.querySelector(".score-in-square").style.display = "flex";
+            document.querySelector(".time-in-square").style.display = "flex";
+        })
+        .to(".snake-field", { 
+            opacity: 1, 
+            y: 0, 
+            duration: 0.2, 
+            ease: "power2.out" }, "+=0.2")
+        .to(".time-in-square", { 
+            opacity: 1, 
+            y: 0, 
+            duration: 0.2, 
+            ease: "power2.out",
+            onComplete: function() {
+                Game(gameSpeed);
+                // startGame(gameSpeed, gameMode, snakeSkin);
+            }}, "+=0.2")
+        .to(".score-in-square", { 
+            opacity: 1, 
+            y: 0, 
+            duration: 0.2, 
+            ease: "power2.out"}, "+=0.2");
+        
+});
+
+function startGame(gameSpeed, gameMode, snakeSkin) {
+    if(gameMode === "classic") new classicGame(gameSpeed, snakeSkin);
+    // if(gameMode === "hardcore") hardcoreGame(snakeSkin);
+    // if(gameMode === "special") specialGame(gameSpeed, snakeSkin);
+    // if(gameMode === "pwp") pwpGame(gameSpeed, snakeSkin);
 }
 
-function createCanvasElement(canvas) {
-    const parent = document.querySelector(".snake-field");
-
-    canvas = document.createElement("canvas");
-    canvas.style.display = "block";
-    canvas.style.height = "100%";
-    canvas.style.width = "100%";
-    
-    parent.appendChild(canvas);
-
-    drawSnake(canvas);
-    // Устанавливаем размеры canvas (чтобы совпадал с родителем)
-    // function updateCanvasSize() {
-    //     canvas.width = parent.clientWidth;
-    //     canvas.height = parent.clientHeight;
-    //     drawSquare(canvas); // Перерисовываем квадрат при изменении размеров
-    // }
-
-    // updateCanvasSize(); // Первоначальная настройка размеров
-
-    // // Если размеры блока меняются (например, анимация GSAP), обновляем canvas
-    // parent.addEventListener("resize", updateCanvasSize);
-}
-
-function drawSnake(canvas) {
-    const ctx = canvas.getContext("2d");
-
-    const squareSize = canvas.width / 30;
-
-    ctx.fillStyle = "red";
-    ctx.fillRect(0, 0, squareSize, squareSize);
-    ctx.fillRect(squareSize, 0, squareSize, squareSize);
-}
-
-function drawSquare(canvas) {
-    const ctx = canvas.getContext("2d");
-    ctx.fillStyle = "red"; 
-    ctx.clearRect(0, 0, canvas.width, canvas.height); 
-    ctx.fillRect(canvas.width / 2 - 25, canvas.height / 2 - 25, 50, 50); 
-}

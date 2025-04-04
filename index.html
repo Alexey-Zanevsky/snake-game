@@ -32,12 +32,12 @@
 
     <div class="flex-container">
         
-        <div class="snake-field">
+        <div class="menu-container">
             <main class="menu">
                 <section class="level-section">
                     <span>CHOOSE LEVEL</span>
                     <div>
-                        <button class="button-style">beginner</button>
+                        <button class="button-style active">beginner</button>
                         <button class="button-style">advanced</button>
                         <button class="button-style">expert</button>
                     </div>
@@ -52,7 +52,25 @@
                     <button class="start-button button-style">START</button>
                 </section>
             </main>
-            <span class="load-timer"></span>
+        </div>
+        <div class="snake-field__container">
+            <div class="time-in-square">
+                <span class="time-text">start in</span>
+                <span class="time">READY?</span>
+            </div>
+            <canvas class="snake-field" id="gameCanvas" width="900" height="600"></canvas>
+            <div class="score-in-square">
+                <span>your score</span>
+                <span class="score">0</span>
+            </div>
+
+            <div id="gameOverModal" class="modal">
+                <p>Game Over!</p>
+                <p>Time: <span id="finalTime"></span></p>
+                <p>Score: <span id="finalScore"></span></p>
+                <button class="button-style">Play Again</button>
+                <button class="button-style">Main Menu</button>
+            </div>
         </div>
         
         

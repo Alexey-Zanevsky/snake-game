@@ -29,11 +29,11 @@
     box-shadow: inset -5px -3px 0px 0px var(--color_2);
     transition: all 0.05s ease-in-out;
 }
-.button-style:active {
-    box-shadow: inset -4px -2px 0px 0px var(--color_2);
-    transform: translateY(2px); 
+.button-style.active {
+    box-shadow: inset -2px -2px 0px 0px var(--color_2);
+    transform: translateY(4px); 
 }
-.button-style:nth-child(2) {
+.level-section .button-style:nth-child(2) {
     margin: 0 20px;
 }
 .start-button-section {
@@ -43,6 +43,10 @@
 }
 .start-button {
     font-size: calc(1* var(--font-size-index));
+}
+.start-button:active {
+    box-shadow: inset -2px -2px 0px 0px var(--color_2);
+    transform: translateY(4px); 
 }
 
 
