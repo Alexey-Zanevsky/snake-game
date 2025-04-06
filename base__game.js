@@ -14,17 +14,11 @@ export class BaseGame {
     this.finalTime = document.querySelector(".finalTime");
     this.finalScore = document.querySelector(".finalScore");
 
+    this.restartBtn = this.gameOverModal.querySelectorAll("button")[0];
+    this.goToMenuBtn = this.gameOverModal.querySelectorAll("button")[1];
     this.handleKeyDown = this.handleKeyDown.bind(this);
-
-    this.gameOverModal.querySelectorAll("button")[0].addEventListener("click", () => {
-      this.gameOverModal.style.display = "none";
-      this.timeEl.textContent = "READY?";
-      this.setUpGame();
-      this.startCountdown();
-    });
-
-    this.gameOverModal.querySelectorAll("button")[1].addEventListener("click", goToMenu);
-
+    this.restartGameHandler = this.restartGameHandler.bind(this);
+    this.goToMenuHandler = this.goToMenuHandler.bind(this);
 
     this.settings = {
       snake: {
@@ -40,9 +34,6 @@ export class BaseGame {
         87: 'up', 83: 'down', 68: 'right', 65: 'left'
       }
     };
-
-    this.setUpGame();
-    this.startCountdown();
   }
 
   validateSnakeSkin(snakeSkin) {
@@ -54,6 +45,25 @@ export class BaseGame {
       console.warn("Error. Installed default snake skin.");
       return { type: 'color', background: colors.color_3, border: colors.color_2 };
     }
+  }
+
+  start() {
+    this.setUpGame();
+    let count = 1;
+    const countdownInterval = setInterval(() => {
+      if (count === 1) {
+        this.timeEl.textContent = "START!";
+      } 
+      if (count === 0) {
+        clearInterval(countdownInterval);
+        this.timeEl.textContent = "00:00";
+        this.timeText.textContent = "time";
+        this.startGameTimer();
+        this.startGame();
+      }
+      count--;
+    }, 800);
+    console.log("start base__game.js");
   }
 
   setUpGame() {
@@ -71,47 +81,34 @@ export class BaseGame {
     };
 
     this.game.gameTimer = 0;
-    this.game.gameTime = 0;
+    this.game.gameTime = 1;
     this.game.score = 0;
     this.game.direction = 'right';
     this.game.nextDirection = 'right';
+
+    // document.removeEventListener('keydown', this.handleKeyDown);
+    document.addEventListener('keydown', this.handleKeyDown);
+
+    
+    this.restartBtn.addEventListener("click", this.restartGameHandler);
+    this.goToMenuBtn.addEventListener("click", this.goToMenuHandler);
   }
 
   startGameTimer() {
     this.game.gameTimer = setInterval(() => {
       this.game.gameTime++;
-      let minutes = String(Math.floor(this.game.gameTime / 60)).padStart(2, '0');
-      let seconds = String(this.game.gameTime % 60).padStart(2, '0');
+      let minutes = String(Math.floor((this.game.gameTime - 1) / 60)).padStart(2, '0');
+      let seconds = String((this.game.gameTime - 1) % 60).padStart(2, '0');
       this.timeEl.textContent = `${minutes}:${seconds}`;
     }, 1000);
-  }
-
-  startCountdown() {
-    let count = 1;
-    const countdownInterval = setInterval(() => {
-      if (count === 1) {
-        this.timeEl.textContent = "START!";
-      } 
-      if (count === 0) {
-        clearInterval(countdownInterval);
-        this.timeEl.textContent = "00:00";
-        this.timeText.textContent = "time";
-        this.startGameTimer();
-        this.startGame();
-      }
-      count--;
-    }, 800);
   }
 
   startGame() {
     this.scoreEl.textContent = this.game.score;
     this.generateSnake();
 
-    document.removeEventListener('keydown', this.handleKeyDown);
-    document.addEventListener('keydown', this.handleKeyDown);
-
     this.startGameInterval = setInterval(() => {
-      if (!this.detectCollision()) {
+      if (!this.detectCollision() && this.game.gameTime != 0) {  // && this.gameTime != 0   for Hardcore Mode
         this.generateSnake();
       } else {
         this.endGame();
@@ -122,6 +119,20 @@ export class BaseGame {
   handleKeyDown(event) {
     this.changeDirection(event.keyCode);
   }
+
+  restartGameHandler = () => {
+    this.gameOverModal.style.display = "none";
+    this.timeEl.textContent = "READY?";
+    this.scoreEl.textContent = 0;
+    this.destroy();
+    this.start();
+  };
+  
+  goToMenuHandler = () => {
+    this.gameOverModal.style.display = "none";
+    this.destroy();
+    goToMenu();
+  };
 
   changeDirection(keyCode) {
     const validKeyPress = Object.keys(this.game.keyCodes).includes(keyCode.toString());
@@ -182,22 +193,19 @@ export class BaseGame {
       this.drawFood(this.food.coordinates.x, this.food.coordinates.y);
       return;
     }
-
+  
     const gridSize = this.settings.snake.size;
     const xMax = this.canvas.width - gridSize;
     const yMax = this.canvas.height - gridSize;
-
+  
     const x = Math.round((Math.random() * xMax) / gridSize) * gridSize;
     const y = Math.round((Math.random() * yMax) / gridSize) * gridSize;
-
-    this.snake.forEach(coordinate => {
-      const conflict = coordinate.x == x && coordinate.y == y;
-      if (conflict) {
-        this.generateFood();
-      } else {
-        this.drawFood(x, y);
-      }
-    });
+    const isOnSnake = this.snake.some(segment => segment.x === x && segment.y === y);
+  
+    if (isOnSnake) 
+      this.generateFood(); 
+     else 
+      this.drawFood(x, y);
   }
 
   drawFood(x, y) {
@@ -226,13 +234,43 @@ export class BaseGame {
     const right = this.snake[0].x > this.canvas.width - this.settings.snake.size;
     const bottom = this.snake[0].y > this.canvas.height - this.settings.snake.size;
 
+    
     return left || top || right || bottom;
+  }
+
+  destroy() {
+    // Очищаем интервал времени игры
+    // clearInterval(this.game.gameTimer);
+    // clearInterval(this.startGameInterval);
+  
+    // Удаляем обработчик нажатия клавиш
+    // document.removeEventListener('keydown', this.handleKeyDown);
+  
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    // Удаляем обработчики с кнопок GameOver
+    this.restartBtn.removeEventListener("click", this.restartGameHandler);
+    this.goToMenuBtn.removeEventListener("click", this.goToMenuHandler);
+  
+    // // Обнуляем все свойства (необязательно, но может помочь для GC)
+    // this.canvas = null;
+    // this.ctx = null;
+    // this.timeText = null;
+    // this.timeEl = null;
+    // this.scoreEl = null;
+    // this.gameOverModal = null;
+    // this.finalTime = null;
+    // this.finalScore = null;
+    // this.snake = null;
+    // this.food = null;
+    // this.settings = null;
+    // this.game = null;
   }
 
   endGame() {
     clearInterval(this.game.gameTimer);
     clearInterval(this.startGameInterval);
     document.removeEventListener('keydown', this.handleKeyDown);
+
     this.finalTime.textContent = this.timeEl.textContent;
     this.finalScore.textContent = this.scoreEl.textContent;
     this.gameOverModal.style.display = "block";

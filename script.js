@@ -1,6 +1,7 @@
 'use strict'
 
 import { ClassicGame } from './classic__game.js';
+import { HardcoreGame } from './hardcore__game.js';
 
 globalThis.colors = {
     color_1: "#6420AA",
@@ -98,9 +99,14 @@ document.querySelector(".start-button").addEventListener("click", function () {
 });
 
 function startGame(gameSpeed, snakeSkin, gameMode) {
-    console.log(`gameSpeed = ${gameSpeed}\nsnakeSkin = ${snakeSkin}\ngameMode = ${gameMode}`, snakeSkin);
-    if(gameMode === "classic") new ClassicGame(snakeSkin, gameSpeed);
-    // if(gameMode === "hardcore") hardcoreGame(snakeSkin);
+    if(gameMode === "classic") {
+        const classicMode = new ClassicGame(snakeSkin, gameSpeed);
+        classicMode.start();
+    }    
+    if(gameMode === "hardcore") {
+        const hardcoreMode = new HardcoreGame(snakeSkin);
+        hardcoreMode.start();
+    }
     // if(gameMode === "special") specialGame(gameSpeed, snakeSkin);
     // if(gameMode === "pwp") pwpGame(gameSpeed, snakeSkin);
 }
@@ -173,7 +179,11 @@ export function goToMenu() {
         opacity: 1,
         scale: 1,
         duration: 0.2,
-        ease: "power1.out"
+        ease: "power1.out",
+        onComplete: function() {
+            document.querySelector(".score").textContent = 0;
+            document.querySelector(".time").textContent = "READY?";
+        }
       });
 }
 
