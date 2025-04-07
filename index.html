@@ -37,23 +37,62 @@
         
         <div class="menu-container">
             <main class="menu">
-                <section class="level-section">
-                    <span>CHOOSE LEVEL</span>
-                    <div>
-                        <button class="button-style active">beginner</button>
-                        <button class="button-style">advanced</button>
-                        <button class="button-style">expert</button>
-                    </div>
-                </section>
-                <section class="snake-version-section">
-                    <span>choose<br>your<br>snake</span>
-                    <div></div>
-                    <div></div>
-                    <div></div>     
-                </section>
-                <section class="start-button-section">
-                    <button class="start-button button-style">START</button>
-                </section>
+                <aside class="menu-aside-1">
+                    <svg class="active" xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="#000000" viewBox="0 0 256 256"><path class="active" d="M247.44,173.75a.68.68,0,0,0,0-.14L231.05,89.44c0-.06,0-.12,0-.18A60.08,60.08,0,0,0,172,40H83.89a59.88,59.88,0,0,0-59,49.52L8.58,173.61a.68.68,0,0,0,0,.14,36,36,0,0,0,60.9,31.71l.35-.37L109.52,160h37l39.71,45.09c.11.13.23.25.35.37A36.08,36.08,0,0,0,212,216a36,36,0,0,0,35.43-42.25ZM104,112H96v8a8,8,0,0,1-16,0v-8H72a8,8,0,0,1,0-16h8V88a8,8,0,0,1,16,0v8h8a8,8,0,0,1,0,16Zm40-8a8,8,0,0,1,8-8h24a8,8,0,0,1,0,16H152A8,8,0,0,1,144,104Zm84.37,87.47a19.84,19.84,0,0,1-12.9,8.23A20.09,20.09,0,0,1,198,194.31L167.8,160H172a60,60,0,0,0,51-28.38l8.74,45A19.82,19.82,0,0,1,228.37,191.47Z"></path></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="#000000" viewBox="0 0 256 256"><path d="M207,40H49A17,17,0,0,0,32,57v49.21a17,17,0,0,0,10,15.47l62.6,28.45a48,48,0,1,0,46.88,0L214,121.68a17,17,0,0,0,10-15.47V57A17,17,0,0,0,207,40ZM96,56h64v72.67l-32,14.54L96,128.67Zm32,168a32,32,0,1,1,32-32A32,32,0,0,1,128,224Z"></path></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="#000000" viewBox="0 0 256 256"><path d="M240,200h-8V144a16,16,0,0,0-16-16H176V56a16,16,0,0,0-16-16H96A16,16,0,0,0,80,56V88H40a16,16,0,0,0-16,16v96H16a8,8,0,0,0,0,16H240a8,8,0,0,0,0-16ZM80,200H40V104H80Zm60-64a8,8,0,0,1-16,0V107.1l-1.47.49a8,8,0,0,1-5.06-15.18l12-4A8,8,0,0,1,140,96Zm76,64H176V144h40Z"></path></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="#000000" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm-4,48a12,12,0,1,1-12,12A12,12,0,0,1,124,72Zm12,112a16,16,0,0,1-16-16V128a8,8,0,0,1,0-16,16,16,0,0,1,16,16v40a8,8,0,0,1,0,16Z"></path></svg>                
+                </aside>
+                <aside class="menu-aside-2">
+                    <section class="game-mode-section">
+                        <span>CHOOSE GAME<br>MODE</span>
+                        <div>
+                            <button class="button-style">classic</button>
+                            <button class="button-style">special</button>
+                            <button class="button-style">hardcore</button>
+                            <button class="button-style">PvP</button>
+                        </div>
+                    </section>
+                    <section class="level-section">
+                        <span>CHOOSE LEVEL</span>
+                        <div>
+                            <button class="button-style active">beginner</button>
+                            <button class="button-style">advanced</button>
+                            <button class="button-style">expert</button>
+                        </div>
+                    </section>
+                    <section class="snake-version-section">
+                        <span>CHOOSE YOUR<br>SNAKE</span>
+                        <div class="active"
+                            data-snake-skin-type="color" 
+                            data-snake-skin-background="#FF7ED4"
+                            data-snake-skin-border="#FF3EA5">
+                            <div id="skin-1"></div>
+                            <div id="skin-1"></div>
+                            <div id="skin-1"></div>
+                        </div>
+                        <div 
+                            style="margin: 0 10px" 
+                            data-snake-skin-type="color" 
+                            data-snake-skin-background="#41B3A2"
+                            data-snake-skin-border="#0D7C66">
+                            <div id="skin-2"></div>
+                            <div id="skin-2"></div>
+                            <div id="skin-2"></div>
+                        </div>
+                        <div
+                            data-snake-skin-type="color" 
+                            data-snake-skin-background="#FFF455"
+                            data-snake-skin-border="#FFC700">
+                            <div id="skin-3"></div>
+                            <div id="skin-3"></div>
+                            <div id="skin-3"></div>
+                        </div>     
+                    </section>
+                    <section class="start-button-section">
+                        <button class="start-button button-style">START</button>
+                    </section>
+                </aside>
             </main>
         </div>
         <div class="snake-field__container">

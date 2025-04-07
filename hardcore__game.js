@@ -32,8 +32,6 @@ export class HardcoreGame extends BaseGame {
         if (this.game.gameTime <= 0) {
             clearInterval(this.game.gameTimer);
             this.timeEl.textContent = '00:00';
-            // Здесь можно вызвать функцию окончания игры, если нужно
-            // this.endGame();
             return;
         }
         this.game.gameTime--;

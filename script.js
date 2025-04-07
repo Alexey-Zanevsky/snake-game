@@ -12,7 +12,8 @@ globalThis.colors = {
     color_6: "#F5F5F5"
 };
 
-const gameMode = "classic";
+const startBtn = document.querySelector(".start-button");
+let gameMode = "classic";
 let gameSpeed = 100;
 const baseSnakeSkin = {
     type: 'color',
@@ -20,19 +21,82 @@ const baseSnakeSkin = {
     border: colors.color_2
 };
 
-document.querySelectorAll('.level-section .button-style').forEach(button => {
-    button.addEventListener('click', () => {
-        document.querySelectorAll('.level-section .button-style').forEach(btn => btn.classList.remove('active'));      
-        button.classList.add('active');
-        const level = button.textContent.toLowerCase();
+const menuAside = document.querySelectorAll('.menu-aside-1 svg');
+menuAside.forEach(clickedButton => {
+    clickedButton.addEventListener('click', () => {
+        menuAside.forEach(btn => {
+            btn.classList.remove('active')
+            btn.querySelector("path").classList.remove('active');
+        });    
+        clickedButton.classList.add('active');  
+        clickedButton.querySelector("path").classList.add('active');
+    })
+})
+
+const gameModeSection = document.querySelectorAll('.game-mode-section .button-style');
+gameModeSection.forEach(clickedButton => {
+    clickedButton.addEventListener('click', () => {
+        gameModeSection.forEach(btn => btn.classList.remove('active'));      
+        clickedButton.classList.add('active');
+        gameMode = clickedButton.textContent.toLowerCase();
+    });
+});
+
+const levelSection = document.querySelectorAll('.level-section .button-style');
+levelSection.forEach(clickedButton => {
+    clickedButton.addEventListener('click', () => {
+        levelSection.forEach(btn => btn.classList.remove('active'));      
+        clickedButton.classList.add('active');
+        const level = clickedButton.textContent.toLowerCase();
         if (level === 'beginner') gameSpeed = 100;
         if (level === 'advanced') gameSpeed = 75;
         if (level === 'expert') gameSpeed = 50;
     });
 });
 
+// dodelat
+// const levelSection = document.querySelectorAll('.level-section .button-style');
+// const gameModeSection = document.querySelectorAll('.game-mode-section .button-style');
+// gameModeSection.forEach(clickedButton => {
+//     clickedButton.addEventListener('click', () => {
+//         gameModeSection.forEach(btn => btn.classList.remove('active'));      
+//         clickedButton.classList.add('active');
+//         gameMode = clickedButton.textContent.toLowerCase();
+//         if(gameMode === 'hardcore') {
+//             level = "expert";
+//             gameSpeed = 50;
+            
+//         }
+//         else chooseLevel();
+//     });
+// });
 
-document.querySelector(".start-button").addEventListener("click", function () {
+// chooseLevel() {
+//     levelSection.forEach(clickedButton => {
+//         clickedButton.addEventListener('click', () => {
+//             levelSection.forEach(btn => btn.classList.remove('active'));      
+//             clickedButton.classList.add('active');
+//             level = clickedButton.textContent.toLowerCase();
+//             if (level === 'beginner') gameSpeed = 100;
+//             if (level === 'advanced') gameSpeed = 75;
+//             if (level === 'expert') gameSpeed = 50;
+//         });
+//     });
+// }
+
+const snakeSkins = document.querySelectorAll('.snake-version-section > div');
+snakeSkins.forEach(clickedSkin => {
+    clickedSkin.addEventListener('click', () => {
+        snakeSkins.forEach(btn => {
+            btn.classList.remove('active');
+        })
+        clickedSkin.classList.add('active');
+    })
+})
+
+
+startBtn.addEventListener("click", function () {
+    startBtn.classList.add('active');
     gsap.timeline()
         .to(".snake-title", { 
             opacity: 0, 
@@ -62,6 +126,7 @@ document.querySelector(".start-button").addEventListener("click", function () {
                     duration: 0.2, 
                     ease: "power1.out", 
                     onComplete: function() {
+                        startBtn.classList.remove('active');
                         document.querySelector(".menu-container").style.display = "none";
                         document.querySelector(".flex-container").style.height = "100%";
                         document.querySelector(".flex-container").style.width = "100%";

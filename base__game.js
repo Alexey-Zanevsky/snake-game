@@ -86,10 +86,7 @@ export class BaseGame {
     this.game.direction = 'right';
     this.game.nextDirection = 'right';
 
-    // document.removeEventListener('keydown', this.handleKeyDown);
     document.addEventListener('keydown', this.handleKeyDown);
-
-    
     this.restartBtn.addEventListener("click", this.restartGameHandler);
     this.goToMenuBtn.addEventListener("click", this.goToMenuHandler);
   }
@@ -228,49 +225,24 @@ export class BaseGame {
         return true;
       }
     }
-
     const left = this.snake[0].x < 0;
     const top = this.snake[0].y < 0;
     const right = this.snake[0].x > this.canvas.width - this.settings.snake.size;
     const bottom = this.snake[0].y > this.canvas.height - this.settings.snake.size;
 
-    
     return left || top || right || bottom;
   }
 
   destroy() {
-    // Очищаем интервал времени игры
-    // clearInterval(this.game.gameTimer);
-    // clearInterval(this.startGameInterval);
-  
-    // Удаляем обработчик нажатия клавиш
-    // document.removeEventListener('keydown', this.handleKeyDown);
-  
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    // Удаляем обработчики с кнопок GameOver
     this.restartBtn.removeEventListener("click", this.restartGameHandler);
     this.goToMenuBtn.removeEventListener("click", this.goToMenuHandler);
-  
-    // // Обнуляем все свойства (необязательно, но может помочь для GC)
-    // this.canvas = null;
-    // this.ctx = null;
-    // this.timeText = null;
-    // this.timeEl = null;
-    // this.scoreEl = null;
-    // this.gameOverModal = null;
-    // this.finalTime = null;
-    // this.finalScore = null;
-    // this.snake = null;
-    // this.food = null;
-    // this.settings = null;
-    // this.game = null;
   }
 
   endGame() {
     clearInterval(this.game.gameTimer);
     clearInterval(this.startGameInterval);
     document.removeEventListener('keydown', this.handleKeyDown);
-
     this.finalTime.textContent = this.timeEl.textContent;
     this.finalScore.textContent = this.scoreEl.textContent;
     this.gameOverModal.style.display = "block";
