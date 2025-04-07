@@ -1,12 +1,12 @@
 .menu {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    /* justify-content: space-between; */
 
     height: 100%;
     width: 100%;
 }
-.menu-aside-1 {
+.menu-aside {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -15,7 +15,7 @@
     width: 10%;
     border-right: 2px solid var(--color_2);
 }
-.menu-aside-1 svg {
+.menu-aside svg {
     cursor: pointer;
     padding: calc(.4* var(--font-size-index)) calc(.4* var(--font-size-index) + 3px) calc(.4* var(--font-size-index)) calc(.4* var(--font-size-index));
     margin-top: calc(.8* var(--font-size-index));
@@ -26,16 +26,16 @@
     width: 50%;
     height: auto;
 }
-.menu-aside-1 svg.active{
+.menu-aside svg.active{
     box-shadow: inset -2px -2px 0px 0px var(--color_2);
     transform: translateY(4px); 
 }
-.menu-aside-1 svg path.active {
+.menu-aside svg path.active {
     fill: var(--color_2);
     filter: drop-shadow(0 0 5px var(--color_2)); 
 }
 
-.menu-aside-2 {
+.menu-play {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -87,7 +87,7 @@
     transition: all 0.05s ease-in-out;
 }
 .snake-version-section div.active {
-    box-shadow: inset 0px 0px 10px var(--color_2), inset 10px 10px 100px #000;
+    box-shadow: inset 0px 0px 10px var(--color_2), inset 0px 0px 20px 40px #2e1b79;
 }
 #skin-1, #skin-2, #skin-3 {
     width: 20%; 
@@ -109,3 +109,14 @@
     padding-right: calc(1* var(--font-size-index) + 3px);
 }
 
+
+/*  */
+.menu-achievments {
+    display: none;
+}
+.menu-rating {
+    display: none;
+}
+.menu-info {
+    display: none;
+}

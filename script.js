@@ -12,39 +12,82 @@ globalThis.colors = {
     color_6: "#F5F5F5"
 };
 
-const startBtn = document.querySelector(".start-button");
+const menuAside = document.querySelectorAll('.menu-aside svg');
+const menus = document.querySelectorAll('aside[class^="menu-"]:not(.menu-aside)');
+
+function showTargetMenuWithAnimation(menuElement) {
+    menuElement.style.display = "flex";
+    gsap.fromTo(menuElement,
+      { opacity: 0, scale: 0.8 },
+      {
+        opacity: 1,
+        scale: 1,
+        duration: 0.3,
+        ease: "power1.out"
+      }
+    );
+}
+menuAside.forEach(clickedButton => {
+    clickedButton.addEventListener('click', () => {
+    menuAside.forEach(btn => {
+        btn.classList.remove('active');
+        btn.querySelector("path").classList.remove('active');
+    });
+    clickedButton.classList.add('active');
+    clickedButton.querySelector("path").classList.add('active');
+
+    const targetMenu = clickedButton.dataset.menuasidebtn;
+    const targetAsideMenu = document.querySelector(`.${targetMenu}`);
+    menus.forEach(menu => {
+        if (menu !== targetAsideMenu && menu.style.display !== "none") {
+            gsap.to(menu, {
+                opacity: 0,
+                scale: 0.8,
+                duration: 0.2,
+                ease: "power1.in",
+                onComplete: () => {
+                    menu.style.display = "none";
+                    showTargetMenuWithAnimation(targetAsideMenu);
+                }
+            });
+        }  
+    });
+  });
+});
+
+
+const gameModeSection = document.querySelectorAll('.game-mode-section .button-style');
+const levelSection = document.querySelectorAll('.level-section .button-style');
+const snakeSkins = document.querySelectorAll('.snake-version-section > div');
+
 let gameMode = "classic";
 let gameSpeed = 100;
-const baseSnakeSkin = {
+let snakeSkin = {
     type: 'color',
     background: colors.color_3,
     border: colors.color_2
 };
 
-const menuAside = document.querySelectorAll('.menu-aside-1 svg');
-menuAside.forEach(clickedButton => {
-    clickedButton.addEventListener('click', () => {
-        menuAside.forEach(btn => {
-            btn.classList.remove('active')
-            btn.querySelector("path").classList.remove('active');
-        });    
-        clickedButton.classList.add('active');  
-        clickedButton.querySelector("path").classList.add('active');
-    })
-})
-
-const gameModeSection = document.querySelectorAll('.game-mode-section .button-style');
 gameModeSection.forEach(clickedButton => {
     clickedButton.addEventListener('click', () => {
-        gameModeSection.forEach(btn => btn.classList.remove('active'));      
+        gameModeSection.forEach(btn => btn.classList.remove('active'));     
         clickedButton.classList.add('active');
         gameMode = clickedButton.textContent.toLowerCase();
+
+        if(gameMode === 'hardcore') {
+            levelSection.forEach(btn => {
+                const isExpert = btn.textContent.toLowerCase() === 'expert';
+                btn.classList.toggle('active', isExpert);
+            })
+            gameSpeed = 50;
+        }
     });
 });
 
-const levelSection = document.querySelectorAll('.level-section .button-style');
 levelSection.forEach(clickedButton => {
     clickedButton.addEventListener('click', () => {
+        if(gameMode === 'hardcore') return;
+
         levelSection.forEach(btn => btn.classList.remove('active'));      
         clickedButton.classList.add('active');
         const level = clickedButton.textContent.toLowerCase();
@@ -54,47 +97,20 @@ levelSection.forEach(clickedButton => {
     });
 });
 
-// dodelat
-// const levelSection = document.querySelectorAll('.level-section .button-style');
-// const gameModeSection = document.querySelectorAll('.game-mode-section .button-style');
-// gameModeSection.forEach(clickedButton => {
-//     clickedButton.addEventListener('click', () => {
-//         gameModeSection.forEach(btn => btn.classList.remove('active'));      
-//         clickedButton.classList.add('active');
-//         gameMode = clickedButton.textContent.toLowerCase();
-//         if(gameMode === 'hardcore') {
-//             level = "expert";
-//             gameSpeed = 50;
-            
-//         }
-//         else chooseLevel();
-//     });
-// });
-
-// chooseLevel() {
-//     levelSection.forEach(clickedButton => {
-//         clickedButton.addEventListener('click', () => {
-//             levelSection.forEach(btn => btn.classList.remove('active'));      
-//             clickedButton.classList.add('active');
-//             level = clickedButton.textContent.toLowerCase();
-//             if (level === 'beginner') gameSpeed = 100;
-//             if (level === 'advanced') gameSpeed = 75;
-//             if (level === 'expert') gameSpeed = 50;
-//         });
-//     });
-// }
-
-const snakeSkins = document.querySelectorAll('.snake-version-section > div');
 snakeSkins.forEach(clickedSkin => {
     clickedSkin.addEventListener('click', () => {
         snakeSkins.forEach(btn => {
             btn.classList.remove('active');
         })
         clickedSkin.classList.add('active');
+        snakeSkin.type = clickedSkin.dataset.snakeskintype;
+        snakeSkin.background = clickedSkin.dataset.snakeskinbackground;
+        snakeSkin.border = clickedSkin.dataset.snakeskinborder;
     })
 })
 
 
+const startBtn = document.querySelector(".start-button");
 startBtn.addEventListener("click", function () {
     startBtn.classList.add('active');
     gsap.timeline()
@@ -154,7 +170,7 @@ startBtn.addEventListener("click", function () {
             duration: 0.2, 
             ease: "power2.out",
             onComplete: function() {
-                startGame(gameSpeed, baseSnakeSkin, gameMode);
+                startGame(gameSpeed, snakeSkin, gameMode);
             }}, "+=0.2")
         .to(".score-in-square", { 
             opacity: 1, 
