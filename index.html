@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- Google Fonts -->
-    <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jersey+15&display=swap" rel="stylesheet"> -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
@@ -18,9 +15,6 @@
 
     <!-- JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
-    <!-- <script src="snake__movement.js" defer></script> -->
-    <!-- <script src="base__game.js" defer></script>
-    <script src="classic__game.js" defer></script> -->
     <script type="module" src="script.js" defer></script>
     <script type="module" src="base__game.js" defer></script>
 
@@ -103,7 +97,12 @@
                 <span class="time-text">start in</span>
                 <span class="time">READY?</span>
             </div>
-            <canvas class="snake-field" width="900" height="600"></canvas>
+            <div class="canvas-container">
+                <canvas class="snake-field" width="900" height="600"></canvas>
+                <div class="pause-overlay">
+                    <span class="pause-text">PAUSED</span>
+                </div>
+            </div>
             <div class="score-in-square">
                 <span>your score</span>
                 <span class="score">0</span>

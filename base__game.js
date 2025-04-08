@@ -13,6 +13,7 @@ export class BaseGame {
     this.gameOverModal = document.querySelector(".gameOverModal");
     this.finalTime = document.querySelector(".finalTime");
     this.finalScore = document.querySelector(".finalScore");
+    this.pauseOverlay = document.querySelector(".pause-overlay");
 
     this.restartBtn = this.gameOverModal.querySelectorAll("button")[0];
     this.goToMenuBtn = this.gameOverModal.querySelectorAll("button")[1];
@@ -83,6 +84,7 @@ export class BaseGame {
     this.game.gameTimer = 0;
     this.game.gameTime = 1;
     this.game.score = 0;
+    this.game.isPaused = false;
     this.game.direction = 'right';
     this.game.nextDirection = 'right';
 
@@ -114,7 +116,32 @@ export class BaseGame {
   }
 
   handleKeyDown(event) {
+    if(event.keyCode === 32) { // 32 - space
+      this.togglePause();
+      return;
+    }
     this.changeDirection(event.keyCode);
+  }
+
+  togglePause() {
+    if (this.game.isPaused) {
+      this.game.isPaused = false;
+      this.pauseOverlay.classList.remove("visible");
+      this.startGameTimer(); 
+      this.startGameInterval = setInterval(() => {
+        if (!this.detectCollision() && this.game.gameTime != 0) {
+          this.generateSnake();
+        } else {
+          this.endGame();
+        }
+      }, this.game.speed);
+      this.timeText.textContent = "time";
+    } else {
+      this.pauseOverlay.classList.add("visible");
+      this.game.isPaused = true;
+      clearInterval(this.game.gameTimer);
+      clearInterval(this.startGameInterval);
+    }
   }
 
   restartGameHandler = () => {

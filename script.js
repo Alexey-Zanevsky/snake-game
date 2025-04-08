@@ -194,8 +194,6 @@ function startGame(gameSpeed, snakeSkin, gameMode) {
 
 export function goToMenu() {
     const tl = gsap.timeline();
-  
-    // Скрыть элементы игры
     tl.to(".score-in-square", {
       opacity: 0,
       y: 30,
@@ -214,12 +212,10 @@ export function goToMenu() {
         duration: 0.2,
         ease: "power2.in",
         onComplete: () => {
-          // Скрываем саму игровую область
           document.querySelector(".snake-field").style.display = "none";
           document.querySelector(".score-in-square").style.display = "none";
           document.querySelector(".time-in-square").style.display = "none";
-  
-          // Готовим элементы меню к появлению
+
           document.querySelector(".menu-container").style.display = "flex";
           document.querySelector(".flex-container").style.height = "70%";
           document.querySelector(".flex-container").style.width = "85%";
@@ -237,7 +233,6 @@ export function goToMenu() {
             gsap.set(".snake-field__container", { display: "none" });
         }
       })
-      // Показать меню
       .to(".menu-container", {
         opacity: 1,
         scale: 1,
