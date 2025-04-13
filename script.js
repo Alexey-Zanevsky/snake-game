@@ -2,6 +2,7 @@
 
 import { ClassicGame } from './classic__game.js';
 import { HardcoreGame } from './hardcore__game.js';
+import { SpecialGame } from './special__game.js';
 
 globalThis.colors = {
     color_1: "#6420AA",
@@ -170,7 +171,7 @@ startBtn.addEventListener("click", function () {
             duration: 0.2, 
             ease: "power2.out",
             onComplete: function() {
-                startGame(gameSpeed, snakeSkin, gameMode);
+                startGame(snakeSkin, gameSpeed, gameMode);
             }}, "+=0.2")
         .to(".score-in-square", { 
             opacity: 1, 
@@ -179,17 +180,20 @@ startBtn.addEventListener("click", function () {
             ease: "power2.out"}, "+=0.2");
 });
 
-function startGame(gameSpeed, snakeSkin, gameMode) {
+function startGame(snakeSkin, gameSpeed, gameMode) {
     if(gameMode === "classic") {
-        const classicMode = new ClassicGame(snakeSkin, gameSpeed);
+        const classicMode = new ClassicGame(snakeSkin, gameSpeed, gameMode);
         classicMode.start();
     }    
     if(gameMode === "hardcore") {
-        const hardcoreMode = new HardcoreGame(snakeSkin);
+        const hardcoreMode = new HardcoreGame(snakeSkin, gameMode);
         hardcoreMode.start();
     }
-    // if(gameMode === "special") specialGame(gameSpeed, snakeSkin);
-    // if(gameMode === "pwp") pwpGame(gameSpeed, snakeSkin);
+    if(gameMode === "special") {
+        const specialGame = new SpecialGame(snakeSkin, gameSpeed, gameMode);
+        specialGame.start();
+    } 
+    // if(gameMode === "pvp") pwpGame(gameSpeed, snakeSkin);
 }
 
 export function goToMenu() {

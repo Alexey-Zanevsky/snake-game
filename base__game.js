@@ -3,7 +3,7 @@
 import { goToMenu } from './script.js';
 
 export class BaseGame {
-  constructor(snakeSkin, gameSpeed) {
+  constructor(snakeSkin, gameSpeed, gameMode) {
     this.canvas = document.querySelector(".snake-field");
     this.ctx = this.canvas.getContext("2d");
 
@@ -29,6 +29,7 @@ export class BaseGame {
     };
 
     this.game = {
+      mode: gameMode,
       speed: gameSpeed,
       keyCodes: {
         38: 'up', 40: 'down', 39: 'right', 37: 'left',
@@ -116,7 +117,7 @@ export class BaseGame {
   }
 
   handleKeyDown(event) {
-    if(event.keyCode === 32) { // 32 - space
+    if(event.keyCode === 32 && this.game.mode !== 'hardcore') { // 32 - space
       this.togglePause();
       return;
     }
@@ -219,18 +220,25 @@ export class BaseGame {
     }
   
     const gridSize = this.settings.snake.size;
-    const xMax = this.canvas.width - gridSize;
-    const yMax = this.canvas.height - gridSize;
+    const columns = this.canvas.width / gridSize;
+    const rows = this.canvas.height / gridSize;
+    const totalCells = columns * rows;
   
-    const x = Math.round((Math.random() * xMax) / gridSize) * gridSize;
-    const y = Math.round((Math.random() * yMax) / gridSize) * gridSize;
-    const isOnSnake = this.snake.some(segment => segment.x === x && segment.y === y);
+    if (this.snake.length >= totalCells) {
+      this.endGame(true); 
+      return;
+    }
   
-    if (isOnSnake) 
-      this.generateFood(); 
-     else 
-      this.drawFood(x, y);
+    let x, y, isOnSnake;
+    do {
+      x = Math.floor(Math.random() * columns) * gridSize;
+      y = Math.floor(Math.random() * rows) * gridSize;
+      isOnSnake = this.snake.some(segment => segment.x === x && segment.y === y);
+    } while (isOnSnake);
+  
+    this.drawFood(x, y);
   }
+  
 
   drawFood(x, y) {
     const size = this.settings.snake.size;
@@ -273,5 +281,10 @@ export class BaseGame {
     this.finalTime.textContent = this.timeEl.textContent;
     this.finalScore.textContent = this.scoreEl.textContent;
     this.gameOverModal.style.display = "block";
+
+    const title = this.gameOverModal.querySelector(".game-over-title");
+    if (title) {
+      title.textContent = victory ? "YOU WIN!" : "GAME OVER";
+    }
   }
 }

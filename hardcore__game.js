@@ -3,8 +3,8 @@
 import { BaseGame } from './base__game.js';
 
 export class HardcoreGame extends BaseGame {
-    constructor(snakeSkin) {
-        super(snakeSkin, 50);
+    constructor(snakeSkin, gameMode) {
+        super(snakeSkin, 50, gameMode);
     }
 
     start() {

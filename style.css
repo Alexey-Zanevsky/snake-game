@@ -18,6 +18,9 @@
     --color_5: #8FD14F;
     --color_6: #F5F5F5;
 
+    /* --apple__color_1: #06D001;
+    --apple__color-2: #009944; */
+
     --skin-1__back: #FF7ED4;
     --skin-1__border: #FF3EA5;
     --skin-2__back: #41B3A2;
@@ -49,11 +52,9 @@ body {
 .snake-title {
     position: absolute;
     top: 0;
-    
     font-size: calc(3 * var(--font-size-index));
     height: 15%;
     padding: 1% 0;
-    
     color: var(--snakeTitle-color);
     text-shadow: 5px 2px 0 var(--color_1), 4px 4px 5px rgba(0, 0, 0, 0.5), 0 0 10px var(--color_2);
 }
@@ -61,7 +62,6 @@ body {
 .flex-container {
     display: flex;
     flex-direction: row;
-
     justify-content: space-between;
     margin: 0 auto;
     height: 70%;
@@ -187,7 +187,6 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-
     width: calc(20% - 20px);
     margin-left: 20px;
     border-radius: 5px;
