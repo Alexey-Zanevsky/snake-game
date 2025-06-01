@@ -1,8 +1,7 @@
 'use strict'
 
-import { ClassicGame } from './classic__game.js';
-import { HardcoreGame } from './hardcore__game.js';
-import { SpecialGame } from './special__game.js';
+import { ClassicGame } from './js/classic__game.js';
+import { HardcoreGame } from './js/hardcore__game.js';
 
 globalThis.colors = {
     color_1: "#6420AA",
@@ -197,10 +196,10 @@ function startGame(snakeSkin, gameSpeed, gameMode) {
         const hardcoreMode = new HardcoreGame(snakeSkin, gameMode);
         hardcoreMode.start();
     }
-    if(gameMode === "special") {
-        const specialGame = new SpecialGame(snakeSkin, gameSpeed, gameMode);
-        specialGame.start();
-    } 
+    // if(gameMode === "special") {
+    //     const specialGame = new SpecialGame(snakeSkin, gameSpeed, gameMode);
+    //     specialGame.start();
+    // } 
     // if(gameMode === "pvp") pvpGame(gameSpeed, snakeSkin);
 }
 

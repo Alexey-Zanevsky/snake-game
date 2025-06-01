@@ -16,6 +16,7 @@ module.exports = function (req, res, next) {
         if(!token) {
             return res.status(400).json({message: 'The user is not logged in'});
         }
+        console.log(config.secret)
         const decodedData = jwt.verify(token, config.secret);
         req.user = decodedData;
         next();
