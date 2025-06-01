@@ -9,55 +9,24 @@ export class SpecialGame extends BaseGame {
   constructor(snakeSkin, gameSpeed, gameMode) {
     super(snakeSkin, gameSpeed, gameMode);
     this.specialFoodInterval = null;
-    this.specialFoodIntervalRemTime = 5000;
-    this.specialFoodIntervalStartTime = null;
     this.specialFood = {
-      onField: false,
+      timeSpentOnTheField: 0,
+      effectOn: false,
       active: false,
-      startActionTime: null,
-      remainingActionTime: 3000,
-      actionInterval: null,
       type: null,
       coordinates: { x: 0, y: 0 },
       types: [
         { type: 'blue',    effect: 'addPoints',    value: 2,     background: '#007bff', border: '#0056b3' },
-        { type: 'red',     effect: 'subtractPoints', value: 2,    background: '#dc3545', border: '#a71d2a' },
-        { type: 'yellow',  effect: 'speedUp',       value: 25, background: '#ffc107', border: '#b38600' },
-        { type: 'white',   effect: 'slowDown',      value: -25, background: '#f8f9fa', border: '#ced4da' }
+        { type: 'red',     effect: 'subtractPoints', value: -2,    background: '#dc3545', border: '#a71d2a' },
+        { type: 'yellow',  effect: 'speedUp',       value: -25, background: '#ffc107', border: '#b38600' },
+        { type: 'white',   effect: 'slowDown',      value: +25, background: '#f8f9fa', border: '#ced4da' }
       ]
     };
-  }
-
-  togglePause() {
-    if (this.game.isPaused) {
-      this.game.isPaused = false;
-      this.pauseOverlay.classList.remove("visible");
-      this.startGameTimer(); 
-
-      this.startGame();
-    } else {
-      this.pauseOverlay.classList.add("visible");
-      this.game.isPaused = true;
-      clearInterval(this.game.gameTimer);
-      clearInterval(this.startGameInterval);
-      clearInterval(this.actionInterval);
-      const elapsedActionTime = Date.now() - this.specialFood.startActionTime;
-      this.specialFood.remainingActionTime -= elapsedActionTime;
-      clearInterval(this.specialFoodInterval);
-      const elapsedSpecialFoodIntervalTime = Date.now() - this.specialFoodIntervalStartTime;
-      this.specialFoodIntervalRemTime -= elapsedSpecialFoodIntervalTime;
-    }
-  }
-  
-  actionIntervalCallbackFunc() {
-    this.specialFood.active = false;
-    this.changeSpeed(this.game.speed);
   }
 
   startGame() {
     this.scoreEl.textContent = this.game.score;
     this.generateSnake();
-    this.generateSpecialFood();
 
     this.startGameInterval = setInterval(() => {
       if (!this.detectCollision() && this.game.gameTime != 0) {
@@ -68,13 +37,25 @@ export class SpecialGame extends BaseGame {
     }, this.game.speed);
 
     this.specialFoodInterval = setInterval(() => {
-      if (!this.specialFood.onField && !this.specialFood.active) {
+      // Если еда есть на поле и не активна (не съедена)
+      if (this.specialFood.active && !this.specialFood.effectOn) {
+        this.specialFood.timeSpentOnTheField++;
+  
+        // Удалить и пересоздать еду, если прошло 5 секунд
+        if (this.specialFood.timeSpentOnTheField >= 5) {
+          this.specialFood.active = false;
+          this.specialFood.timeSpentOnTheField = 0;
+          this.generateSpecialFood();
+        }
+  
+      // Если еды нет и эффект не активен — сгенерировать
+      } else if (!this.specialFood.active && !this.specialFood.effectOn) {
         this.generateSpecialFood();
       }
-    }, this.specialFoodIntervalRemTime);
+    }, 1000);
   }
 
-  generateSnake() {
+  async generateSnake() {
     this.game.direction = this.game.nextDirection;
     let coordinate;
     switch (this.game.direction) {
@@ -87,12 +68,11 @@ export class SpecialGame extends BaseGame {
     this.snake.unshift(coordinate);
     this.game.inputLocked = false;
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-    if (this.specialFood.onField && !this.specialFood.active) {
-      const { x, y } = this.specialFood.coordinates;
-      const { background, border } = this.specialFood.type;
-      this.drawSpecialFood(x, y, background, border);
-    }
+    // if (this.specialFood.onField && !this.specialFood.active) {
+    //   const { x, y } = this.specialFood.coordinates;
+    //   const { background, border } = this.specialFood.type;
+    //   this.drawSpecialFood(x, y, background, border);
+    // }
 
     const ateFood = this.snake[0].x === this.food.coordinates.x && this.snake[0].y === this.food.coordinates.y;
     const ateSpecialFood = this.snake[0].x === this.specialFood.coordinates.x && this.snake[0].y === this.specialFood.coordinates.y;
@@ -100,56 +80,74 @@ export class SpecialGame extends BaseGame {
       this.food.active = false;
       this.game.score += 1;
       this.scoreEl.textContent = this.game.score;
+
+      this.popups.push({
+        x: this.food.coordinates.x,
+        y: this.food.coordinates.y,
+        value: '+1',
+        lifetime: 1000,            
+        created: Date.now()
+      });
     } 
     else if(ateSpecialFood) {
-      this.specialFood.onField = false;
-      const { effect, value } = this.specialFood.type;
+      console.log("eated");
+      this.specialFood.timeSpentOnTheField = 0;
 
-      // clearTimeout(this.specialFood.timeOnTheField);
+      this.specialFood.active = false;
+      const { effect, value } = this.specialFood.type;
 
       let popupText = '';
       switch (effect) {
         case 'addPoints':
+          console.log("addPoints");
           popupText = '+2';
           this.game.score += value;
           this.snake.unshift(coordinate);
           break;
         case 'subtractPoints':
+          console.log("substractPoints");
           popupText = '-2';
-          this.game.score = Math.max(0, this.game.score - value);
-          
+          this.game.score += value;
+          this.snake.pop();
+          this.snake.pop();
           break;
         case 'speedUp':
+          console.log("speedUp");
           this.snake.pop();
           popupText = 'boost!';
-          this.changeSpeed(this.game.speed + value);
-          this.specialFood.active = true;
-          this.specialFood.startActionTime = Date.now();
-          this.specialFood.actionInterval = setTimeout(this.actionIntervalCallbackFunc, this.specialFood.remainingActionTime);
+          this.specialFood.effectOn = true;
+
+          await this.changeSpeedTemporarily(this.game.speed + value, 3000);
+          this.specialFood.effectOn = false;
           break;
         case 'slowDown':
+          console.log("slowDown");
           this.snake.pop();
           popupText = 'slow!';
-          this.changeSpeed(this.game.speed + value);
-          this.specialFood.active = true;
-          this.specialFood.startActionTime = Date.now();
-          this.specialFood.actionInterval = setTimeout(this.actionIntervalCallbackFunc, this.specialFood.remainingActionTime);
+          this.specialFood.effectOn = true;
+
+          await this.changeSpeedTemporarily(this.game.speed + value, 3000);
+          this.specialFood.effectOn = false;
           break;
       }
       this.scoreEl.textContent = this.game.score;
-      this.popups.push({
-        x: this.specialFood.coordinates.x,
-        y: this.specialFood.coordinates.y,
-        value: popupText,
-        color: specialType.background,
-        lifetime: 1000,
-        created: Date.now()
-      });
+      // this.popups.push({
+      //   x: this.specialFood.coordinates.x,
+      //   y: this.specialFood.coordinates.y,
+      //   value: popupText,
+      //   color: specialType.background,
+      //   lifetime: 1000,
+      //   created: Date.now()
+      // });
     } else {
       this.snake.pop();
     }
-
     this.generateFood();
+    if (this.specialFood.active && !this.specialFood.effectOn) {
+      const { x, y } = this.specialFood.coordinates;
+      const { background, border } = this.specialFood.type;
+      this.drawSpecialFood(x, y, background, border);
+    }
     this.drawSnake();
     this.drawPopups();
   }
@@ -159,10 +157,9 @@ export class SpecialGame extends BaseGame {
  * Each special food has a type that determines its effect.
  */
   generateSpecialFood() {
-    if (this.specialFood.active || this.specialFood.onField) {
+    if (this.specialFood.active) {
       return;
     }
-
     const gridSize = this.settings.snake.size;
     const columns = this.canvas.width / gridSize;
     const rows = this.canvas.height / gridSize;
@@ -177,7 +174,8 @@ export class SpecialGame extends BaseGame {
     const specialType = this.specialFood.types[Math.floor(Math.random() * this.specialFood.types.length)];
     this.specialFood.type = specialType;
     this.specialFood.coordinates = { x, y };
-    this.specialFood.onField = true;
+    this.specialFood.active = true;
+    this.specialFood.timeSpentOnTheField = 0;
 
     this.drawSpecialFood(x, y, specialType.background, specialType.border);
   }
@@ -208,10 +206,21 @@ export class SpecialGame extends BaseGame {
     }, changedSpeed);
   }
 
+  // ⬇️ делаем временную смену скорости
+  async changeSpeedTemporarily(newSpeed, duration) {
+    const oldSpeed = this.game.speed;
+
+    this.changeSpeed(newSpeed); // смена скорости (очищаем + пересоздаём интервал)
+
+    await new Promise(resolve => setTimeout(resolve, duration)); // ждём duration мс
+
+    this.changeSpeed(oldSpeed); // возвращаем старую скорость
+  }
+
   endGame() {
     if (this.specialFoodInterval) clearInterval(this.specialFoodInterval);
     if (this.specialFood.timeOnTheField) clearTimeout(this.specialFood.timeOnTheField);
-    if(this.specialFood.actionTime) clearTimeout(this.specialFood.actionTime);
+    if (this.specialFood.actionInterval) clearTimeout(this.specialFood.actionInterval);
     super.endGame();
   }
 }

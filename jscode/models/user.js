@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
         type: String, 
         required: true 
     },
+    roles: [{type: String, ref: 'Role'}],
     classicBeginnerScore: Number,
     classicAdvancedScore: Number,
     classicExpertScore: Number,

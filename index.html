@@ -31,6 +31,20 @@
         
         <div class="menu-container">
             <main class="menu">
+                <div id="auth-overlay">
+                    <div class="auth-card">
+                      <h2 id="auth-title">Authorization</h2>
+                  
+                      <form id="auth-form">
+                        <input  id="nickname" type="text"     placeholder="Nickname" required />
+                        <input  id="password" type="password" placeholder="Password" required />
+                        <div>
+                            <button id="signup-btn" type="button">Sign Up</button>
+                            <button id="login-btn" type="button">Login</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
                 <aside class="menu-aside">
                     <svg data-menuAsideBtn="menu-play" class="active" xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="#000000" viewBox="0 0 256 256"><path class="active" d="M247.44,173.75a.68.68,0,0,0,0-.14L231.05,89.44c0-.06,0-.12,0-.18A60.08,60.08,0,0,0,172,40H83.89a59.88,59.88,0,0,0-59,49.52L8.58,173.61a.68.68,0,0,0,0,.14,36,36,0,0,0,60.9,31.71l.35-.37L109.52,160h37l39.71,45.09c.11.13.23.25.35.37A36.08,36.08,0,0,0,212,216a36,36,0,0,0,35.43-42.25ZM104,112H96v8a8,8,0,0,1-16,0v-8H72a8,8,0,0,1,0-16h8V88a8,8,0,0,1,16,0v8h8a8,8,0,0,1,0,16Zm40-8a8,8,0,0,1,8-8h24a8,8,0,0,1,0,16H152A8,8,0,0,1,144,104Zm84.37,87.47a19.84,19.84,0,0,1-12.9,8.23A20.09,20.09,0,0,1,198,194.31L167.8,160H172a60,60,0,0,0,51-28.38l8.74,45A19.82,19.82,0,0,1,228.37,191.47Z"></path></svg>
                     <svg data-menuAsideBtn="menu-achievments" xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="#000000" viewBox="0 0 256 256"><path d="M207,40H49A17,17,0,0,0,32,57v49.21a17,17,0,0,0,10,15.47l62.6,28.45a48,48,0,1,0,46.88,0L214,121.68a17,17,0,0,0,10-15.47V57A17,17,0,0,0,207,40ZM96,56h64v72.67l-32,14.54L96,128.67Zm32,168a32,32,0,1,1,32-32A32,32,0,0,1,128,224Z"></path></svg>
@@ -42,9 +56,9 @@
                         <span>CHOOSE GAME<br>MODE</span>
                         <div>
                             <button class="button-style active">classic</button>
-                            <button class="button-style">special</button>
+                            <!-- <button class="button-style">special</button> -->
                             <button class="button-style">hardcore</button>
-                            <button class="button-style">PvP</button>
+                            <!-- <button class="button-style">PvP</button> -->
                         </div>
                     </section>
                     <section class="level-section">
@@ -88,7 +102,43 @@
                     </section>
                 </aside>
                 <aside class="menu-achievments">menu-achievments</aside>
-                <aside class="menu-rating">menu-rating</aside>
+                <aside class="menu-rating">
+                    <span class="span-nickname">your nickname: </span>
+                    <section class="game-mode-section">
+                        <span>CHOOSE GAME<br>MODE</span>
+                        <div>
+                            <button class="button-style">classic</button>
+                            <!-- <button class="button-style">special</button> -->
+                            <button class="button-style">hardcore</button>
+                            <!-- <button class="button-style">PvP</button> -->
+                        </div>
+                    </section>
+                    <section class="level-section">
+                        <span>CHOOSE LEVEL</span>
+                        <div>
+                            <button class="button-style">beginner</button>
+                            <button class="button-style">advanced</button>
+                            <button id="expert" class="button-style">expert</button>
+                        </div>
+                    </section>
+                    <section class="showTableBtn-section">
+                        <span id="gameModeSpan"></span>
+                        <button id="showTableBtn" class="button-style">show table</button>
+                        <span id="gameLevelSpan"></span>
+                    </section>
+                    <div class="rating-table__container">
+                        <table class="rating-table">
+                            <thead>
+                                <tr>
+                                    <th>Nickname</th>
+                                    <th>Score</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+
+                </aside>
                 <aside class="menu-info">menu-info</aside>
             </main>
         </div>
@@ -109,7 +159,7 @@
             </div>
 
             <div class="gameOverModal">
-                <p>Game Over!</p>
+                <p> </p>
                 <p>Time: <span class="finalTime"></span></p>
                 <p>Score: <span class="finalScore"></span></p>
                 <button class="button-style">Play Again</button>
@@ -117,117 +167,20 @@
             </div>
         </div>
         
-        
-        <div class="rating">
-            <div class="rating__best-players">Best players</div>
-            <div class="rating__columns-names flex-item">
-                <aside class="rating__columns-names__number"></aside>
-                <section class="rating__columns-names__name">Name</section>
-                <aside class="rating__columns-names__score">Score</aside>
-            </div>
-            <div class="rating__record flex-item">
-                <aside class="rating__record__number">1.</aside>
-                <section class="rating__record__name">Player</section>
-                <aside class="rating__record__score">1242</aside>
-            </div>
-            <div class="rating__record flex-item">
-                <aside class="rating__record__number">2.</aside>
-                <section class="rating__record__name">Player</section>
-                <aside class="rating__record__score">987</aside>
-            </div>
-            <div class="rating__record flex-item">
-                <aside class="rating__record__number">3.</aside>
-                <section class="rating__record__name">Player</section>
-                <aside class="rating__record__score">879</aside>
-            </div>
-            <div class="rating__record flex-item">
-                <aside class="rating__record__number">4.</aside>
-                <section class="rating__record__name">Player</section>
-                <aside class="rating__record__score">356</aside>
-            </div>
-            <div class="rating__record flex-item">
-                <aside class="rating__record__number">5.</aside>
-                <section class="rating__record__name">Player</section>
-                <aside class="rating__record__score">356</aside>
-            </div>
-            <div class="rating__record flex-item">
-                <aside class="rating__record__number">6.</aside>
-                <section class="rating__record__name">Player</section>
-                <aside class="rating__record__score">356</aside>
-            </div>
-            <div class="rating__record flex-item">
-                <aside class="rating__record__number">7.</aside>
-                <section class="rating__record__name">Player</section>
-                <aside class="rating__record__score">356</aside>
-            </div>
-            <div class="rating__record flex-item">
-                <aside class="rating__record__number">8.</aside>
-                <section class="rating__record__name">Player</section>
-                <aside class="rating__record__score">356</aside>
-            </div>
-            <div class="rating__record flex-item">
-                <aside class="rating__record__number">9.</aside>
-                <section class="rating__record__name">Player</section>
-                <aside class="rating__record__score">356</aside>
-            </div>
-            <div class="rating__record flex-item">
-                <aside class="rating__record__number">10.</aside>
-                <section class="rating__record__name">Player</section>
-                <aside class="rating__record__score">356</aside>
-            </div>
-            <div class="rating__record flex-item">
-                <aside class="rating__record__number">11.</aside>
-                <section class="rating__record__name">Player</section>
-                <aside class="rating__record__score">356</aside>
-            </div>
-            <div class="rating__record flex-item">
-                <aside class="rating__record__number">12.</aside>
-                <section class="rating__record__name">Player</section>
-                <aside class="rating__record__score">356</aside>
-            </div>
-            <div class="rating__record flex-item">
-                <aside class="rating__record__number">13.</aside>
-                <section class="rating__record__name">Player</section>
-                <aside class="rating__record__score">356</aside>
-            </div>
-            <div class="rating__record flex-item">
-                <aside class="rating__record__number">14.</aside>
-                <section class="rating__record__name">Player</section>
-                <aside class="rating__record__score">356</aside>
-            </div>
-            <div class="rating__record flex-item">
-                <aside class="rating__record__number">15.</aside>
-                <section class="rating__record__name">Player</section>
-                <aside class="rating__record__score">356</aside>
-            </div>
-            <div class="rating__record flex-item">
-                <aside class="rating__record__number">16.</aside>
-                <section class="rating__record__name">Player</section>
-                <aside class="rating__record__score">356</aside>
-            </div>
-            <div class="rating__record flex-item">
-                <aside class="rating__record__number">17.</aside>
-                <section class="rating__record__name">Player</section>
-                <aside class="rating__record__score">356</aside>
-            </div>
-            <div class="rating__record flex-item">
-                <aside class="rating__record__number">18.</aside>
-                <section class="rating__record__name">Player</section>
-                <aside class="rating__record__score">356</aside>
-            </div>
-            <div class="rating__record flex-item">
-                <aside class="rating__record__number">19.</aside>
-                <section class="rating__record__name">Player</section>
-                <aside class="rating__record__score">356</aside>
-            </div>
-            <div class="rating__record flex-item">
-                <aside class="rating__record__number">20.</aside>
-                <section class="rating__record__name">Player</section>
-                <aside class="rating__record__score">356</aside>
-            </div>
-            
+        <!-- 🏆  -->
+        <div class="rating-container">
+            <span>Best players in<br>Hardcore mode</span>
+            <table class="rating-table-hardcore">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nickname</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
         </div>
-        
     </div>
 </body>
 </html>

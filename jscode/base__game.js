@@ -1,6 +1,7 @@
 'use strict';
 
-import { goToMenu } from './script.js';
+// import { goToMenu} from './script.js';
+import { goToMenu, updateHighScore } from './script.js';
 
 
 /**
@@ -93,6 +94,7 @@ export class BaseGame {
 
   restartGameHandler = () => {
     this.gameOverModal.style.display = "none";
+    this.gameOverModal.querySelector("p").textContent = " ";
     this.timeEl.textContent = "READY?";
     this.scoreEl.textContent = 0;
     this.destroy();
@@ -101,6 +103,7 @@ export class BaseGame {
   
   goToMenuHandler = () => {
     this.gameOverModal.style.display = "none";
+    this.gameOverModal.querySelector("p").textContent = " ";
     this.destroy();
     goToMenu();
   };
@@ -207,7 +210,6 @@ export class BaseGame {
   startGame() {
     this.scoreEl.textContent = this.game.score;
     this.generateSnake();
-    console.log(this.game.speed);
     this.startGameInterval = setInterval(() => {
       if (!this.detectCollision() && this.game.gameTime != 0) {  // && this.gameTime != 0   for Hardcore Mode
         this.generateSnake();
@@ -340,11 +342,15 @@ export class BaseGame {
     document.removeEventListener('keydown', this.handleKeyDown);
     this.finalTime.textContent = this.timeEl.textContent;
     this.finalScore.textContent = this.scoreEl.textContent;
+    
+    let difficulty;
+    if (this.game.speed === 100) difficulty = 'beginner';
+    if (this.game.speed === 75) difficulty = 'advanced';
+    if (this.game.speed === 50) difficulty = 'expert';
+    // console.log(`UpdateHighScore BaseGame.js. this.gameMode: ${this.game.mode}, difficulty: ${difficulty}, this.finalScore.textContent: ${this.finalScore.textContent}`);
+    updateHighScore(this.game.mode, difficulty, this.finalScore.textContent);
+    if(this.gameOverModal.querySelector("p").textContent == ' ')
+      this.gameOverModal.querySelector("p").textContent = "Game Over!";
     this.gameOverModal.style.display = "block";
-
-    const title = this.gameOverModal.querySelector(".game-over-title");
-    if (title) {
-      title.textContent = victory ? "YOU WIN!" : "GAME OVER";
-    }
   }
 }

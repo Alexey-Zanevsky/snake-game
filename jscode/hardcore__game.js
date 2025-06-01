@@ -1,6 +1,7 @@
 'use strict';
 
 import { BaseGame } from './base__game.js';
+import { updateHighScore } from './script.js';
 /**
  * Class representing the hardcore game mode.
  * Extends the base game functionality with limited time.
@@ -58,7 +59,11 @@ export class HardcoreGame extends BaseGame {
         
         this.finalTime.textContent = `${elapsedMinutes}:${elapsedSeconds}`;
         this.finalScore.textContent = this.scoreEl.textContent;
+        updateHighScore('hardcore', 'expert', this.finalScore.textContent);
+        if(this.gameOverModal.querySelector("p").textContent == ' ')
+          this.gameOverModal.querySelector("p").textContent = "Game Over!";
         this.gameOverModal.style.display = "block";
+
       }
 
 }

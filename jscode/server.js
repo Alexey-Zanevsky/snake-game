@@ -1,70 +1,40 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const cors = require('cors');
+const authRouter = require('./authRouter');
+const PORT = process.env.PORT || 5000;
+const config = require('./config');
 
-const User = require('./models/user.js');
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: 'http://127.0.0.1:5501',
+  // origin: 'https://snake-qlmv7zqyu-alexeys-projects-2c55db20.vercel.app',
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+// app.options('*', (req, res) => {
+//   res.header("Access-Control-Allow-Origin", "https://snake-ek2nyh6hu-alexeys-projects-2c55db20.vercel.app");
+//   res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+//   res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+//   res.sendStatus(200);
+// });
 app.use(express.json());
+app.use("/auth", authRouter);
+// app.use((req, res, next) => {
+//   res.header("Access-Control-Allow-Origin", "https://snake-ek2nyh6hu-alexeys-projects-2c55db20.vercel.app");
+//   res.header("Access-Control-Allow-Methods", "GET, POST");
+//   res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+//   console.log(`Request from: ${req.headers.origin}, Path: ${req.path}, Method: ${req.method}`);
+//   next();
+// });
 
-/**
- * Connect to MongoDb Atlas.
- */
-mongoose.connect('mongodb+srv://Alexey:AloxA2003_24@cluster0.mongodb.net/snake-game')
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.error('Mongo error', err));
-
-// 🔐 JWT secret
-const JWT_SECRET = 'snake-secret-key';
-
-
-// 📌 Registration
-app.post('/register', async (req, res) => {
-  const { nickname, password } = req.body;
-
+const start = async () => {
   try {
-    const existingUser = await User.findOne({ nickname });
-    if (existingUser) {
-      return res.status(400).json({ error: 'Пользователь уже существует' });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ nickname, password: hashedPassword });
-    await user.save();
-
-    res.status(201).json({ message: 'Регистрация успешна' });
-  } catch (err) {
-    res.status(500).json({ error: 'Ошибка сервера' });
+    await mongoose.connect(`mongodb+srv://Alexey:${config.password}@cluster0.pnj89vy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`);
+    app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+  } catch (e) {
+    console.log(e);
   }
-});
-
-
-// 📌 Login
-app.post('/login', async (req, res) => {
-  const { nickname, password } = req.body;
-
-  try {
-    const user = await User.findOne({ nickname });
-    if (!user) {
-      return res.status(400).json({ error: 'Пользователь не найден' });
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(400).json({ error: 'Неверный пароль' });
-    }
-
-    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '2h' });
-    res.json({ message: 'Вход выполнен', token });
-  } catch (err) {
-    res.status(500).json({ error: 'Ошибка сервера' });
-  }
-});
-
-
-app.listen(3000, () => {
-  console.log('Сервер работает на http://localhost:3000');
-});
+}
+start();

@@ -18,16 +18,12 @@
     --color_5: #8FD14F;
     --color_6: #F5F5F5;
 
-    /* --apple__color_1: #06D001;
-    --apple__color-2: #009944; */
-
     --skin-1__back: #FF7ED4;
     --skin-1__border: #FF3EA5;
     --skin-2__back: #41B3A2;
     --skin-2__border: #0D7C66;
     --skin-3__back: #FFF455;
     --skin-3__border: #FFC700;
-    /* --color_6: #FF3EA5; */
 }
 
 body {
@@ -78,6 +74,51 @@ body {
     box-shadow: 0 0 10px var(--color_2), 0 0 10px #000;
 }
 
+#auth-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    z-index: 9999;           /* always on top */
+}
+.auth-card {
+    width: calc(15 * var(--font-size-index)); 
+    padding: 2rem 2.5rem;
+    background: var(--color_1); 
+    border-radius: 5px;
+    border: 2px solid var(--color_2);
+    box-shadow: 0 0 10px var(--color_2), 0 0 10px #000;
+    /* box-shadow: 0 8px 20px rgba(0,0,0,0.35); */
+    text-align: center; font-family: Arial, sans-serif;
+}
+#auth-title {
+    margin-bottom: 3%;
+}
+#auth-form input {
+    margin-bottom: 3%;
+    font-size: calc(.8 * var(--font-size-index));
+    width: 100%; 
+    padding: 3%; 
+    background-color: var(--color_4);
+    border-radius: 5px;
+}
+#auth-form div {
+    display: flex;
+    justify-content: space-between;
+}
+#signup-btn, #login-btn {
+    cursor: pointer;
+    width: 45%; 
+    padding: 3%; 
+    font-size: calc(.8 * var(--font-size-index));
+    background-color: var(--color_3);
+    border-radius: 5px;
+    box-shadow: inset -5px -3px 0px 0px var(--color_2);
+    transition: all 0.05s ease-in-out;
+}
+
 .snake-field__container {
     display: none;
     justify-content: center;
@@ -125,7 +166,6 @@ body {
     text-shadow: 0px 3px 0px var(--color_2);
     text-align: center;
 }
-
 
 .gameOverModal {
     display: none;
@@ -183,49 +223,46 @@ body {
     text-shadow: 5px 2px 0 var(--color_1), 4px 4px 5px rgba(0, 0, 0, 0.5), 0 0 10px var(--color_2);
 }
 
-.rating {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
+.rating-container {
     width: calc(20% - 20px);
+    max-height: 100%; 
+    overflow-y: auto; 
     margin-left: 20px;
     border-radius: 5px;
     border: 2px solid var(--color_2);
     background-color: var(--color_4);
     box-shadow: 0 0 10px var(--color_2), 0 0 10px #000;
-    overflow: hidden;
+    text-align: center;
 }
-.rating__best-players {
+.rating-container span {
     text-align: center;
     font-size: calc(.7* var(--font-size-index));
 }
-.flex-item {
-    display: flex;
-}
-.flex-item > * {
+.rating-table-hardcore {
+    width: 100%;
+    border-collapse: collapse;
     font-size: calc(.5 * var(--font-size-index));
-    font-weight: 400;
 }
-aside, section {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-.rating__columns-names {
-    padding-bottom: 5px;
-    border-bottom: 1px solid var(--color_2);
-}
-.rating__columns-names__number, .rating__record__number {
+.rating-table-hardcore th, .rating-table-hardcore td {
+    padding: 3px; 
     text-align: center;
-    flex: 1.4;
 }
-.rating__columns-names__name, .rating__record__name {
-    flex: 5.6;
+.rating-table-hardcore th {
+    border-bottom: 2px solid var(--color_2);
 }
-.rating__columns-names__score, .rating__record__score {
-    flex: 3;
+.rating-table-hardcore tbody tr:nth-child(odd) {
+    background-color: var(--color_3);
 }
 
+@media (max-width: 600px) {
+    .rating-table-hardcore {
+        font-size: 1rem;
+    }
+
+    .rating-table-hardcore th, .rating-table-hardcore td {
+        padding: 0.7rem;
+    }
+}
 
 @media screen and (max-width: 769px) {
     .flex-container {
@@ -236,14 +273,6 @@ aside, section {
     .menu-container {
         width: 100%;
         height: 80vh;
-    }
-    .rating {
-        min-height: fit-content;
-        width: 100%;
-
-        margin: 10px 0 0 0;
-        
-        justify-content: space-between;
     }
 }
 @media screen and (max-width: 1440px){ 
