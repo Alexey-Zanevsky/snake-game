@@ -5,11 +5,11 @@ const authRouter = require('./authRouter');
 // const PORT = process.env.PORT || 5000;
 const PORT = 5000;
 const config = require('./config');
-const path = require('path');
+// const path = require('path');
 
 const app = express();
 
-app.use(express.static(path.join(__dirname, '../'))); 
+// app.use(express.static(path.join(__dirname, '../'))); 
 
 app.use(cors({
   // stable version
