@@ -281,8 +281,8 @@ export function goToMenu() {
 // const API = 'http://localhost:5000/auth'; 
 // 
 
-// const API = "https://snake-qlmv7zqyu-alexeys-projects-2c55db20.vercel.app"; 
-const API = "https://snake-m83yfrpmg-alexeys-projects-2c55db20.vercel.app";
+// const API = "https://snake-m83yfrpmg-alexeys-projects-2c55db20.vercel.app";
+const API = "https://snake-game-pied-one.vercel.app";
 function getPayload() {
     return {
       nickname: document.getElementById('nickname').value,
@@ -294,7 +294,7 @@ async function sendAuthRequest(endpoint) {
     // console.log(`${API}/${endpoint}`);
     // console.log(getPayload());
     try {
-      const response = await fetch(`${API}/${endpoint}`, {
+      const response = await fetch(`${API}/auth/${endpoint}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
