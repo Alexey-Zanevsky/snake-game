@@ -8,12 +8,7 @@ const config = require('./config');
 
 const app = express();
 
-// app.use((req, res, next) => {
-//   res.header("Access-Control-Allow-Origin", "https://snake-livid-two.vercel.app");
-//   res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-//   res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-//   next();
-// });
+app.use(express.static(path.join(__dirname, '../'))); 
 
 app.use(cors({
   // stable version
@@ -30,11 +25,6 @@ app.use(cors({
 app.use(express.json());
 app.use("/auth", authRouter);
 
-// app.use((req, res, next) => {
-//   console.log(`Запрос: ${req.method} ${req.url}, Тело:`, req.body);
-//   next();
-// });
-
 const start = async () => {
   try {
     await mongoose.connect(`mongodb+srv://Alexey:${config.password}@cluster0.pnj89vy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`);
@@ -43,4 +33,9 @@ const start = async () => {
     console.log(e);
   }
 }
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../index.html'));
+});
+
 start();
