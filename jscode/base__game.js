@@ -105,6 +105,22 @@ export class BaseGame {
     this.gameOverModal.style.display = "none";
     this.gameOverModal.querySelector("p").textContent = " ";
     this.destroy();
+
+    
+  if (window.backgroundMusic && !window.backgroundMusic.paused) {
+    window.backgroundMusic.pause();
+    window.backgroundMusic.currentTime = 0;
+  }
+
+  
+  if (window.audioSettings?.musicEnabled) {
+    const menuMusic = new Audio('./sounds/background-Neon-Nights.mp3');
+    menuMusic.loop = true;
+    menuMusic.volume = window.audioSettings.volume ?? 0.5;
+    window.backgroundMusic = menuMusic;
+    menuMusic.play();
+  }
+
     goToMenu();
   };
 
@@ -242,7 +258,10 @@ export class BaseGame {
       this.food.active = false;
       this.game.score += 1;
       this.scoreEl.textContent = this.game.score;
-
+      if (window.audioSettings?.effectsEnabled) {
+        const eatSound = new Audio('./sounds/bell-notification.mp3');
+        eatSound.play();
+      }
       this.popups.push({
         x: this.food.coordinates.x,
         y: this.food.coordinates.y,
@@ -342,7 +361,7 @@ export class BaseGame {
     document.removeEventListener('keydown', this.handleKeyDown);
     this.finalTime.textContent = this.timeEl.textContent;
     this.finalScore.textContent = this.scoreEl.textContent;
-    
+  
     let difficulty;
     if (this.game.speed === 100) difficulty = 'beginner';
     if (this.game.speed === 75) difficulty = 'advanced';
@@ -351,6 +370,12 @@ export class BaseGame {
     updateHighScore(this.game.mode, difficulty, this.finalScore.textContent);
     if(this.gameOverModal.querySelector("p").textContent == ' ')
       this.gameOverModal.querySelector("p").textContent = "Game Over!";
+
+    if (window.audioSettings?.effectsEnabled) {
+      const gameOverSound = new Audio('./sounds/game-over-arcade.mp3');
+      gameOverSound.play();
+    }
+
     this.gameOverModal.style.display = "block";
   }
 }

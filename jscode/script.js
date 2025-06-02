@@ -2,7 +2,7 @@
 
 import { ClassicGame } from './classic__game.js';
 import { HardcoreGame } from './hardcore__game.js';
-import { SpecialGame } from './special__game.js';
+// import { SpecialGame } from './special__game.js';
 
 globalThis.colors = {
     color_1: "#6420AA",
@@ -13,7 +13,53 @@ globalThis.colors = {
     color_6: "#F5F5F5"
 };
 
-// menu switching
+// SOUNDS
+
+window.backgroundMusic = new Audio("./sounds/background-Neon-Nights.mp3");
+window.backgroundMusic.loop = true;
+window.backgroundMusic.volume = 0.5;
+
+const muteBtn = document.getElementById('mute-btn');
+const effectsBtn = document.getElementById('effects-btn');
+const volumeSlider = document.getElementById('volume-slider');
+
+let isMuted = false;
+let effectsEnabled = true;
+
+window.audioSettings = {
+  musicEnabled: true,
+  effectsEnabled: true,
+  volume: 0.5
+};
+
+muteBtn.addEventListener('click', () => {
+  isMuted = !isMuted;
+  if (window.backgroundMusic) {
+    window.backgroundMusic.muted = isMuted;
+  }
+  muteBtn.textContent = isMuted ? '🔇' : '🔊';
+  window.isMuted = isMuted;
+});
+
+effectsBtn.addEventListener('click', () => {
+  effectsEnabled = !effectsEnabled;
+  window.audioSettings.effectsEnabled = effectsEnabled;
+  effectsBtn.textContent = effectsEnabled ? '🎵 FX On' : '🚫 FX Off';
+});
+
+volumeSlider.addEventListener('input', (e) => {
+  const volume = parseFloat(e.target.value);
+  if (window.backgroundMusic) {
+    window.backgroundMusic.volume = volume;
+    window.backgroundMusic.muted = volume === 0;
+  }
+  isMuted = volume === 0;
+  muteBtn.textContent = isMuted ? '🔇' : '🔊';
+  window.isMuted = isMuted;
+});
+
+// MENU SWITCHING
+
 const menuAside = document.querySelectorAll('.menu-aside svg');
 const menus = document.querySelectorAll('aside[class^="menu-"]:not(.menu-aside)');
 
@@ -115,6 +161,7 @@ snakeSkins.forEach(clickedSkin => {
 // the chain of events after pressing the start button
 const startBtn = document.querySelector(".start-button");
 startBtn.addEventListener("click", function () {
+    
     startBtn.classList.add('active');
     gsap.timeline()
         .to(".snake-title", { 
@@ -189,6 +236,23 @@ startBtn.addEventListener("click", function () {
  * @param {string} gameMode - Selected game mode ('classic', 'hardcore', 'special').
  */
 function startGame(snakeSkin, gameSpeed, gameMode) {
+  if (window.backgroundMusic && !window.backgroundMusic.paused) {
+    window.backgroundMusic.pause();
+    window.backgroundMusic.currentTime = 0;
+  }
+
+  
+  let musicPath = "./sounds/NeonNightsClassic.mp3";
+  if (gameMode === "hardcore") {
+    musicPath = "./sounds/Untitled.mp3";
+  }
+
+  if (!window.isMuted) {
+    window.backgroundMusic = new Audio(musicPath);
+    window.backgroundMusic.loop = true;
+    window.backgroundMusic.volume = document.getElementById('volume-slider').value || 0.5;
+    window.backgroundMusic.play();
+  }
     if(gameMode === "classic") {
         const classicMode = new ClassicGame(snakeSkin, gameSpeed, gameMode);
         classicMode.start();
@@ -197,10 +261,10 @@ function startGame(snakeSkin, gameSpeed, gameMode) {
         const hardcoreMode = new HardcoreGame(snakeSkin, gameMode);
         hardcoreMode.start();
     }
-    if(gameMode === "special") {
-        const specialGame = new SpecialGame(snakeSkin, gameSpeed, gameMode);
-        specialGame.start();
-    } 
+    // if(gameMode === "special") {
+    //     const specialGame = new SpecialGame(snakeSkin, gameSpeed, gameMode);
+    //     specialGame.start();
+    // } 
     // if(gameMode === "pvp") pvpGame(gameSpeed, snakeSkin);
 }
 
@@ -257,7 +321,7 @@ export function goToMenu() {
         duration: 0.2,
         ease: "power1.out"
       })
-      .to(".rating", {
+      .to(".rating-container", {
         opacity: 1,
         scale: 1,
         duration: 0.2,
@@ -305,6 +369,9 @@ async function sendAuthRequest(endpoint) {
   
         if (response.ok) {
           console.log('Succes. Token:', data.token);
+          if (!isMuted) {
+            backgroundMusic.play();
+          }
           localStorage.setItem('nickname', data.nickname);
           localStorage.setItem('token', data.token);
 
@@ -477,5 +544,4 @@ async function updateHardcoreRanking() {
 }
 
 updateHardcoreRanking();
-
 

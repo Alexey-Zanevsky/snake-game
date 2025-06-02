@@ -7,27 +7,26 @@ const config = require('./config');
 
 const app = express();
 
+// app.use(cors({
+//   origin: 'http://127.0.0.1:5501',
+//   methods: ['GET', 'POST'],
+//   allowedHeaders: ['Content-Type', 'Authorization']
+// }));
+
 app.use(cors({
-  origin: 'http://127.0.0.1:5501',
-  // origin: 'https://snake-qlmv7zqyu-alexeys-projects-2c55db20.vercel.app',
+  origin: function (origin, callback) {
+    if (!origin || origin.startsWith('http://127.0.0.1') || origin.startsWith('http://localhost')) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
-// app.options('*', (req, res) => {
-//   res.header("Access-Control-Allow-Origin", "https://snake-ek2nyh6hu-alexeys-projects-2c55db20.vercel.app");
-//   res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-//   res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-//   res.sendStatus(200);
-// });
+
 app.use(express.json());
 app.use("/auth", authRouter);
-// app.use((req, res, next) => {
-//   res.header("Access-Control-Allow-Origin", "https://snake-ek2nyh6hu-alexeys-projects-2c55db20.vercel.app");
-//   res.header("Access-Control-Allow-Methods", "GET, POST");
-//   res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-//   console.log(`Request from: ${req.headers.origin}, Path: ${req.path}, Method: ${req.method}`);
-//   next();
-// });
 
 const start = async () => {
   try {

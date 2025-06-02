@@ -45,6 +45,33 @@ body {
     z-index: -1;
 }
 
+/* SOUNDS */
+#sound-controls {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 9999; 
+    background-color: rgba(0, 0, 0, 0.6); 
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+  
+#sound-controls button,
+#sound-controls input[type="range"] {
+    cursor: pointer;
+    background-color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+}
+  
+#sound-controls button:hover {
+    background-color: #ddd;
+}
+
 .snake-title {
     position: absolute;
     top: 0;

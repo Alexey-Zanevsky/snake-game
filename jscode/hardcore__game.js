@@ -62,8 +62,12 @@ export class HardcoreGame extends BaseGame {
         updateHighScore('hardcore', 'expert', this.finalScore.textContent);
         if(this.gameOverModal.querySelector("p").textContent == ' ')
           this.gameOverModal.querySelector("p").textContent = "Game Over!";
+
+        if (window.audioSettings?.effectsEnabled) {
+          const gameOverSound = new Audio('./sounds/game-over-arcade.mp3');
+          gameOverSound.play();
+        }
+
         this.gameOverModal.style.display = "block";
-
       }
-
 }
